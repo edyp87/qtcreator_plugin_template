@@ -1,0 +1,9 @@
+#pragma once
+
+#include <QtGlobal>
+
+#if defined(QTCREATORPLUGIN_LIBRARY)
+#  define QTCREATORPLUGINSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define QTCREATORPLUGINSHARED_EXPORT Q_DECL_IMPORT
+#endif
