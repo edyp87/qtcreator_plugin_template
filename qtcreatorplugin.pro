@@ -2,11 +2,13 @@ DEFINES += QTCREATORPLUGIN_LIBRARY
 
 # QtCreatorPlugin files
 
-SOURCES += qtcreatorpluginplugin.cpp
+SOURCES += qtcreatorpluginplugin.cpp \
+    options.cpp
 
 HEADERS += qtcreatorpluginplugin.h \
         qtcreatorplugin_global.h \
-        qtcreatorpluginconstants.h
+        qtcreatorpluginconstants.h \
+    options.h
 
 # Qt Creator linking
 

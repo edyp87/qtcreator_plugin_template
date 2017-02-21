@@ -4,6 +4,13 @@
 
 #include <extensionsystem/iplugin.h>
 
+namespace Core
+{
+    class Command;
+}
+
+class QAction;
+
 namespace QtCreatorPlugin {
 namespace Internal {
 
@@ -22,6 +29,12 @@ public:
 
 private:
     void triggerAction();
+    Core::Command * createCommand();
+    QAction * createAction();
+    void setShortcut(Core::Command * command);
+    void createMenu(Core::Command * command);
+    void connectActionToTrigger(QAction * action);
+    void createOptionsPage();
 };
 
 } // namespace Internal

@@ -1,5 +1,6 @@
 #include "qtcreatorpluginplugin.h"
 #include "qtcreatorpluginconstants.h"
+#include "options.h"
 
 #include <coreplugin/icore.h>
 #include <coreplugin/icontext.h>
@@ -18,53 +19,32 @@ namespace Internal {
 
 QtCreatorPluginPlugin::QtCreatorPluginPlugin()
 {
-    // Create your members
 }
 
 QtCreatorPluginPlugin::~QtCreatorPluginPlugin()
 {
-    // Unregister objects from the plugin manager's object pool
-    // Delete members
 }
 
 bool QtCreatorPluginPlugin::initialize(const QStringList &arguments, QString *errorString)
 {
-    // Register objects in the plugin manager's object pool
-    // Load settings
-    // Add actions to menus
-    // Connect to other plugins' signals
-    // In the initialize function, a plugin can be sure that the plugins it
-    // depends on have initialized their members.
-
     Q_UNUSED(arguments)
     Q_UNUSED(errorString)
 
-    auto action = new QAction(tr("QtCreatorPlugin Action"), this);
-    Core::Command *cmd = Core::ActionManager::registerAction(action, Constants::ACTION_ID,
-                                                             Core::Context(Core::Constants::C_GLOBAL));
-    cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Alt+Meta+A")));
-    connect(action, &QAction::triggered, this, &QtCreatorPluginPlugin::triggerAction);
-
-    Core::ActionContainer *menu = Core::ActionManager::createMenu(Constants::MENU_ID);
-    menu->menu()->setTitle(tr("QtCreatorPlugin"));
-    menu->addAction(cmd);
-    Core::ActionManager::actionContainer(Core::Constants::M_TOOLS)->addMenu(menu);
+    auto * command = createCommand();
+    setShortcut(command);
+    createMenu(command);
+    createOptionsPage();
 
     return true;
 }
 
 void QtCreatorPluginPlugin::extensionsInitialized()
 {
-    // Retrieve objects from the plugin manager's object pool
-    // In the extensionsInitialized function, a plugin can be sure that all
-    // plugins that depend on it are completely initialized.
+
 }
 
 ExtensionSystem::IPlugin::ShutdownFlag QtCreatorPluginPlugin::aboutToShutdown()
 {
-    // Save settings
-    // Disconnect from signals that are not needed during shutdown
-    // Hide UI (if you add UI that is not in the main window directly)
     return SynchronousShutdown;
 }
 
@@ -73,6 +53,43 @@ void QtCreatorPluginPlugin::triggerAction()
     QMessageBox::information(Core::ICore::mainWindow(),
                              tr("Action Triggered"),
                              tr("This is an action from QtCreatorPlugin."));
+}
+
+Core::Command *QtCreatorPluginPlugin::createCommand()
+{
+    auto * action = createAction();
+    return Core::ActionManager::registerAction(action, Constants::ACTION_ID,
+                                               Core::Context(Core::Constants::C_GLOBAL));
+}
+
+QAction *QtCreatorPluginPlugin::createAction()
+{
+    auto * action = new QAction(tr("QtCreatorPlugin Action"), this);
+    connectActionToTrigger(action);
+    return action;
+}
+
+void QtCreatorPluginPlugin::setShortcut(Core::Command *command)
+{
+    command->setDefaultKeySequence(QKeySequence(tr("Ctrl+Alt+Meta+A")));
+}
+
+void QtCreatorPluginPlugin::createMenu(Core::Command *command)
+{
+    Core::ActionContainer *menu = Core::ActionManager::createMenu(Constants::MENU_ID);
+    menu->menu()->setTitle(tr("QtCreatorPlugin"));
+    menu->addAction(command);
+    Core::ActionManager::actionContainer(Core::Constants::M_TOOLS)->addMenu(menu);
+}
+
+void QtCreatorPluginPlugin::connectActionToTrigger(QAction * action)
+{
+    connect(action, &QAction::triggered, this, &QtCreatorPluginPlugin::triggerAction);
+}
+
+void QtCreatorPluginPlugin::createOptionsPage()
+{
+    addAutoReleasedObject(new Options);
 }
 
 } // namespace Internal
