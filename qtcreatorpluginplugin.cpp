@@ -1,6 +1,7 @@
 #include "qtcreatorpluginplugin.h"
 #include "qtcreatorpluginconstants.h"
 #include "options.h"
+#include "outputpane.h"
 
 #include <coreplugin/icore.h>
 #include <coreplugin/icontext.h>
@@ -34,6 +35,7 @@ bool QtCreatorPluginPlugin::initialize(const QStringList &arguments, QString *er
     setShortcut(command);
     createMenu(command);
     createOptionsPage();
+    createOutputPane();
 
     return true;
 }
@@ -90,6 +92,11 @@ void QtCreatorPluginPlugin::connectActionToTrigger(QAction * action)
 void QtCreatorPluginPlugin::createOptionsPage()
 {
     addAutoReleasedObject(new Options);
+}
+
+void QtCreatorPluginPlugin::createOutputPane()
+{
+    addAutoReleasedObject(new OutputPane);
 }
 
 } // namespace Internal

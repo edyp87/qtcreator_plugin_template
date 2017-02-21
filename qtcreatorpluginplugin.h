@@ -35,6 +35,7 @@ private:
     void createMenu(Core::Command * command);
     void connectActionToTrigger(QAction * action);
     void createOptionsPage();
+    void createOutputPane();
 };
 
 } // namespace Internal

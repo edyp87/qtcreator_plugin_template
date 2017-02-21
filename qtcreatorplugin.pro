@@ -3,12 +3,14 @@ DEFINES += QTCREATORPLUGIN_LIBRARY
 # QtCreatorPlugin files
 
 SOURCES += qtcreatorpluginplugin.cpp \
-    options.cpp
+    options.cpp \
+    outputpane.cpp
 
 HEADERS += qtcreatorpluginplugin.h \
         qtcreatorplugin_global.h \
         qtcreatorpluginconstants.h \
-    options.h
+    options.h \
+    outputpane.h
 
 # Qt Creator linking
 
